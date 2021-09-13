@@ -17,9 +17,14 @@ import com.naveen.contactentrysystem.dto.CallList;
 import com.naveen.contactentrysystem.entity.Contacts;
 import com.naveen.contactentrysystem.service.ContactDetailsService;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @RestController
 @RequestMapping(value = "/contacts")
 public class ContactDetailsController {
+
+	private static final Logger logger = LoggerFactory.getLogger(ContactDetailsController.class);
 
 	@Autowired
 	ContactDetailsService contactDetailsService;
@@ -54,7 +59,7 @@ public class ContactDetailsController {
 
 		return contactDetailsService.deleteContactById(id);
 	}
-	
+
 	@GetMapping("/call-list")
 	public List<CallList> getCallList() {
 

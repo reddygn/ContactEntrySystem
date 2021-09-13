@@ -9,6 +9,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.naveen.contactentrysystem.controller.ContactDetailsController;
 import com.naveen.contactentrysystem.dto.CallList;
 import com.naveen.contactentrysystem.dto.NameDto;
 import com.naveen.contactentrysystem.dto.PhoneDto;
@@ -23,8 +24,7 @@ import com.naveen.contactentrysystem.repository.PhoneRepository;
 
 @Service
 public class ContactDetailsService {
-
-	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+	private static final Logger logger = LoggerFactory.getLogger(ContactDetailsController.class);
 
 	@Autowired
 	ContactsRepository contactsRepository;

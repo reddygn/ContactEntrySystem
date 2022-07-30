@@ -2,11 +2,16 @@ package com.naveen.contactentrysystem.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
+import javax.naming.ContextNotEmptyException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.naveen.contactentrysystem.controller.ContactDetailsController;
@@ -21,6 +26,7 @@ import com.naveen.contactentrysystem.repository.AddressRepository;
 import com.naveen.contactentrysystem.repository.ContactsRepository;
 import com.naveen.contactentrysystem.repository.NameRepository;
 import com.naveen.contactentrysystem.repository.PhoneRepository;
+import com.naveen.contactentrysystem.util.ContactEntrySystemException;
 
 @Service
 public class ContactDetailsService {
@@ -58,21 +64,35 @@ public class ContactDetailsService {
 
 	}
 
-	public List<Contacts> getAllContacts() {
+	public ResponseEntity<List<Contacts>> getAllContacts() {
 
 		List<Contacts> contacts = new ArrayList<>();
 
-		try {
-			contacts = contactsRepository.findAll();
-		} catch (Exception e) {
-			logger.error("Exception occured while fetching the contacts. Details: {}", e.getMessage(), e);
+		contacts = contactsRepository.findAll();
+
+		if (contacts.size() > 0) {
+			return new ResponseEntity<List<Contacts>>(contacts, HttpStatus.OK);
+
+		} else {
+			return new ResponseEntity<List<Contacts>>(contacts, HttpStatus.NOT_FOUND);
+
 		}
-		return contacts;
 	}
 
-	public Contacts getContactById(int id) {
+	public ResponseEntity<Contacts> getContactById(int id) throws Exception {
 
-		return contactsRepository.findById(id).orElse(null);
+		Contacts response = contactsRepository.findById(id).orElse(null);
+
+		if (response == null) {
+			logger.error("No Record Found With The Given ID :: " + id);
+			return new ResponseEntity<Contacts>(response, HttpStatus.NOT_FOUND);
+		}
+
+		else {
+			return new ResponseEntity<Contacts>(response, HttpStatus.OK);
+
+		}
+
 	}
 
 	public Contacts updateContact(int id, Contacts updateContactRequest) {

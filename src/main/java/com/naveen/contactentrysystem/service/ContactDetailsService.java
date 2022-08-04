@@ -74,6 +74,7 @@ public class ContactDetailsService {
 			return new ResponseEntity<List<Contacts>>(contacts, HttpStatus.OK);
 
 		} else {
+			logger.error("There is no data available in the server");
 			return new ResponseEntity<List<Contacts>>(contacts, HttpStatus.NOT_FOUND);
 
 		}
